@@ -4,7 +4,6 @@ import me.psikuvit.friends.commands.FriendsCommandsRegisterer;
 import me.psikuvit.friends.database.MySQL;
 import me.psikuvit.friends.database.MySQLData;
 import me.psikuvit.friends.listeners.JoinListener;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {

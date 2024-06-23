@@ -1,18 +1,15 @@
 package me.psikuvit.friends.database;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import me.psikuvit.friends.Friends;
 import me.psikuvit.friends.Main;
 import me.psikuvit.friends.Utils;
-import org.bukkit.entity.Player;
 
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class MySQLData {
 

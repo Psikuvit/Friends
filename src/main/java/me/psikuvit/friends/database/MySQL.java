@@ -5,7 +5,10 @@ import me.psikuvit.friends.Main;
 import me.psikuvit.friends.Utils;
 import org.bukkit.Bukkit;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class MySQL {
 
@@ -36,7 +39,7 @@ public class MySQL {
                 Utils.log("Disconnected from MySQL");
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Utils.log("Couldn't disconnect from database");
         }
     }
 
@@ -61,7 +64,7 @@ public class MySQL {
         try {
             return connection != null && !connection.isClosed();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            Utils.log("Couldn't check if database is connected");
             return false;
         }
     }

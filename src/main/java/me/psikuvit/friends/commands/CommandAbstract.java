@@ -4,7 +4,6 @@ import me.psikuvit.friends.Friends;
 import me.psikuvit.friends.Main;
 import org.bukkit.command.CommandSender;
 
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class CommandAbstract {
