@@ -33,14 +33,36 @@ public class Friends {
         return playerFriends;
     }
 
-    public void addFriend(Player player, UUID friendToAdd) {
+    public void addFriend(Player player, Player friendToAdd) {
         UUID playerUUID = player.getUniqueId();
+        UUID friendToAddUUID = friendToAdd.getUniqueId();
         List<UUID> friends = playerFriends.get(playerUUID);
-        if (friends.contains(friendToAdd)) {
+
+        if (friends.contains(friendToAddUUID)) {
             player.sendMessage(Utils.color("&cThis player is already your friends!"));
             return;
         }
-        friends.add(friendToAdd);
+
+        friends.add(friendToAddUUID);
+
+        if (playerFriends.containsKey(playerUUID)) {
+            playerFriends.put(playerUUID, friends);
+        } else {
+            playerFriends.replace(playerUUID, playerFriends.get(playerUUID), friends);
+        }
+    }
+
+    public void removeFriend(Player player, Player friendToRemove) {
+        UUID playerUUID = player.getUniqueId();
+        UUID friendToRemoveUUID = friendToRemove.getUniqueId();
+        List<UUID> friends = playerFriends.get(playerUUID);
+
+        if (!friends.contains(friendToRemoveUUID)) {
+            player.sendMessage(Utils.color("&cYou don't have a friend named '" + friendToRemove.getName() + "'!"));
+            return;
+        }
+
+        friends.remove(friendToRemoveUUID);
 
         if (playerFriends.containsKey(playerUUID)) {
             playerFriends.put(playerUUID, friends);
