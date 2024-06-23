@@ -1,0 +1,8 @@
+name: Friends
+version: '${project.version}'
+main: me.psikuvit.friends.Main
+
+commands:
+  friends:
+    description: main command of the plugin
+
