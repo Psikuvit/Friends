@@ -7,7 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FriendAdd extends CommandAbstract {
 
@@ -19,14 +20,14 @@ public class FriendAdd extends CommandAbstract {
     public void executeCommand(String[] args, CommandSender sender) {
         Player player = (Player) sender;
 
-        UUID friendToAdd = Bukkit.getPlayer(args[1]).getUniqueId();
+        Player friendToAdd = Bukkit.getPlayer(args[1]);
 
         if (friendToAdd == null) {
             player.sendMessage(Utils.color("&cPlayer not found!"));
             return;
         }
 
-        if (player.getUniqueId() == friendToAdd) {
+        if (player == friendToAdd) {
             player.sendMessage(Utils.color("&cYou can't add yourself as a friend!"));
             return;
         }

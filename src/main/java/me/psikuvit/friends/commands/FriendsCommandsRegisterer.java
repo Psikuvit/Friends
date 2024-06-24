@@ -3,6 +3,7 @@ package me.psikuvit.friends.commands;
 import me.psikuvit.friends.Main;
 import me.psikuvit.friends.Utils;
 import me.psikuvit.friends.commands.args.FriendAdd;
+import me.psikuvit.friends.commands.args.FriendRemove;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +21,7 @@ public class FriendsCommandsRegisterer implements CommandExecutor, TabExecutor {
     public FriendsCommandsRegisterer(final Main plugin) {
         commandAbstractMap = new HashMap<>();
         commandAbstractMap.put("add", new FriendAdd(plugin));
+        commandAbstractMap.put("remove", new FriendRemove(plugin));
 
     }
     

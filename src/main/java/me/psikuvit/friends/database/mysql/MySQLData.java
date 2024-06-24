@@ -1,8 +1,9 @@
-package me.psikuvit.friends.database;
+package me.psikuvit.friends.database.mysql;
 
 import me.psikuvit.friends.Friends;
 import me.psikuvit.friends.Main;
 import me.psikuvit.friends.Utils;
+import me.psikuvit.friends.database.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,44 +12,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class MySQLData {
+public class MySQLData implements Database {
 
     private final MySQL mySQL = Main.getInstance().getMySQL();
     private final Friends friendsMethods = Friends.getInstance();
 
-    public static MySQLData INSTANCE;
-
-    public static MySQLData getINSTANCE() {
-        if (INSTANCE == null) {
-            INSTANCE = new MySQLData();
-        }
-        return INSTANCE;
-    }
-
-    public void saveHashMaps() {
-        try (Connection connection = mySQL.getConnection()) {
-            PreparedStatement playerStatement = connection.prepareStatement("INSERT INTO players (player_uuid) VALUES(?) ON DUPLICATE KEY UPDATE player_uuid=player_uuid");
-            for (UUID playerUUID : friendsMethods.getPlayerFriends().keySet()) {
-                playerStatement.setString(1, playerUUID.toString());
-                playerStatement.executeUpdate();
-            }
-
-            PreparedStatement friendsStatement = connection.prepareStatement("INSERT INTO friends (player_uuid, friends_uuids) VALUES(?, ?) ON DUPLICATE KEY UPDATE player_uuid=player_uuid");
-            for (UUID playerUUID : friendsMethods.getPlayerFriends().keySet()) {
-                for (UUID friendUUID : friendsMethods.getPlayerFriends().get(playerUUID)) {
-                    friendsStatement.setString(1, playerUUID.toString());
-                    friendsStatement.setString(1, friendUUID.toString());
-                    friendsStatement.executeUpdate();
-                }
-            }
-
-            Utils.log("Saved data into the database");
-
-        } catch (SQLException e) {
-            Utils.log("Can't find connection");
-        }
-    }
-
+    @Override
     public void loadHashMaps() {
 
         try (Connection connection = mySQL.getConnection()) {
@@ -74,6 +43,31 @@ public class MySQLData {
             Utils.log("Loaded data from the database");
         } catch (SQLException exception) {
             Utils.log("Couldn't generate player data");
+        }
+    }
+
+    @Override
+    public void saveHashMaps() {
+        try (Connection connection = mySQL.getConnection()) {
+            PreparedStatement playerStatement = connection.prepareStatement("INSERT INTO players (player_uuid) VALUES(?) ON DUPLICATE KEY UPDATE player_uuid=player_uuid");
+            for (UUID playerUUID : friendsMethods.getPlayerFriends().keySet()) {
+                playerStatement.setString(1, playerUUID.toString());
+                playerStatement.executeUpdate();
+            }
+
+            PreparedStatement friendsStatement = connection.prepareStatement("INSERT INTO friends (player_uuid, friends_uuids) VALUES(?, ?) ON DUPLICATE KEY UPDATE player_uuid=player_uuid");
+            for (UUID playerUUID : friendsMethods.getPlayerFriends().keySet()) {
+                for (UUID friendUUID : friendsMethods.getPlayerFriends().get(playerUUID)) {
+                    friendsStatement.setString(1, playerUUID.toString());
+                    friendsStatement.setString(1, friendUUID.toString());
+                    friendsStatement.executeUpdate();
+                }
+            }
+
+            Utils.log("Saved data into the database");
+
+        } catch (SQLException e) {
+            Utils.log("Can't find connection");
         }
     }
 }

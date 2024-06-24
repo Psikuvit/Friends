@@ -1,8 +1,10 @@
 package me.psikuvit.friends;
 
 import me.psikuvit.friends.commands.FriendsCommandsRegisterer;
-import me.psikuvit.friends.database.MySQL;
-import me.psikuvit.friends.database.MySQLData;
+import me.psikuvit.friends.database.Database;
+import me.psikuvit.friends.database.DatabaseType;
+import me.psikuvit.friends.database.mysql.MySQL;
+import me.psikuvit.friends.database.mysql.MySQLData;
 import me.psikuvit.friends.listeners.JoinListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,8 +13,7 @@ public final class Main extends JavaPlugin {
     private static Main instance;
 
     private MySQL mySQL;
-
-    private MySQLData mySQLData;
+    private Database database;
 
     @Override
     public void onEnable() {
@@ -23,12 +24,19 @@ public final class Main extends JavaPlugin {
         saveDefaultConfig();
         ConfigManager.reload();
 
-        mySQL = new MySQL();
-        mySQLData = new MySQLData();
 
-        mySQL.connectMySQL();
-        mySQL.registerMySQL();
-        mySQLData.loadHashMaps();
+        if (ConfigManager.getDatabaseType() == DatabaseType.MySQL) {
+            mySQL = new MySQL();
+            mySQL.connectMySQL();
+            mySQL.registerMySQL();
+
+            database = new MySQLData();
+        } else if (ConfigManager.getDatabaseType() == DatabaseType.LOCAL) {
+            database = new MySQLData();
+
+        }
+
+        database.loadHashMaps();
 
 
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
@@ -40,8 +48,11 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        mySQLData.saveHashMaps();
-        mySQL.disconnectMySQL();
+        database.saveHashMaps();
+
+        if (ConfigManager.getDatabaseType() == DatabaseType.MySQL) {
+            mySQL.disconnectMySQL();
+        }
     }
 
     public static Main getInstance() {

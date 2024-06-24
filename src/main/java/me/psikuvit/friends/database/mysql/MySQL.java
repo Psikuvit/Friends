@@ -1,4 +1,4 @@
-package me.psikuvit.friends.database;
+package me.psikuvit.friends.database.mysql;
 
 import me.psikuvit.friends.ConfigManager;
 import me.psikuvit.friends.Main;
@@ -13,11 +13,11 @@ import java.sql.SQLException;
 public class MySQL {
 
 
-    private final String host = ConfigManager.getString("database.host");
-    private final String port = ConfigManager.getString("database.port");
-    private final String database = ConfigManager.getString("database.database");
-    private final String username = ConfigManager.getString("database.username");
-    private final String password = ConfigManager.getString("database.password");
+    private final String host = ConfigManager.getString("msqyl.host");
+    private final String port = ConfigManager.getString("msqyl.port");
+    private final String database = ConfigManager.getString("msqyl.database");
+    private final String username = ConfigManager.getString("msqyl.username");
+    private final String password = ConfigManager.getString("msqyl.password");
     private Connection connection;
 
     // Connect to Database
