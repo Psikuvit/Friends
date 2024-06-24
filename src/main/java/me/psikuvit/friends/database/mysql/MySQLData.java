@@ -1,7 +1,7 @@
 package me.psikuvit.friends.database.mysql;
 
-import me.psikuvit.friends.Friends;
-import me.psikuvit.friends.Main;
+import me.psikuvit.friends.FriendsManager;
+import me.psikuvit.friends.FriendsPlugin;
 import me.psikuvit.friends.Utils;
 import me.psikuvit.friends.database.Database;
 
@@ -14,11 +14,11 @@ import java.util.UUID;
 
 public class MySQLData implements Database {
 
-    private final MySQL mySQL = Main.getInstance().getMySQL();
-    private final Friends friendsMethods = Friends.getInstance();
+    private final MySQL mySQL = FriendsPlugin.getInstance().getMySQL();
+    private final FriendsManager friendsMethods = FriendsManager.getInstance();
 
     @Override
-    public void loadHashMaps() {
+    public void loadData() {
 
         try (Connection connection = mySQL.getConnection()) {
 
@@ -47,7 +47,7 @@ public class MySQLData implements Database {
     }
 
     @Override
-    public void saveHashMaps() {
+    public void saveData() {
         try (Connection connection = mySQL.getConnection()) {
             PreparedStatement playerStatement = connection.prepareStatement("INSERT INTO players (player_uuid) VALUES(?) ON DUPLICATE KEY UPDATE player_uuid=player_uuid");
             for (UUID playerUUID : friendsMethods.getPlayerFriends().keySet()) {

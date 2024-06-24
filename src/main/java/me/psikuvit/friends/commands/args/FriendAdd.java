@@ -1,18 +1,18 @@
 package me.psikuvit.friends.commands.args;
 
-import me.psikuvit.friends.Main;
+import me.psikuvit.friends.FriendsPlugin;
 import me.psikuvit.friends.Utils;
 import me.psikuvit.friends.commands.CommandAbstract;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FriendAdd extends CommandAbstract {
 
-    public FriendAdd(Main plugin) {
+    public FriendAdd(FriendsPlugin plugin) {
         super(plugin);
     }
 
@@ -53,12 +53,6 @@ public class FriendAdd extends CommandAbstract {
 
     @Override
     public List<String> tabComplete(String[] args) {
-        List<String> completions = new ArrayList<>();
-
-        if (args.length == 0) {
-            completions.add("add");
-        }
-
-        return completions;
+        return Collections.singletonList("add");
     }
 }

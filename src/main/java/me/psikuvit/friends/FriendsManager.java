@@ -6,21 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Friends {
+public class FriendsManager {
 
     private final HashMap<UUID, List<UUID>> playerFriends;
     private final HashMap<UUID, List<UUID>> ignoredPlayers;
 
-    private static Friends INSTANCE;
+    private static FriendsManager INSTANCE;
 
-    public Friends() {
+    public FriendsManager() {
         playerFriends = new HashMap<>();
         ignoredPlayers = new HashMap<>();
     }
 
-    public static Friends getInstance() {
+    public static FriendsManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Friends();
+            INSTANCE = new FriendsManager();
         }
         return INSTANCE;
     }
@@ -45,11 +45,7 @@ public class Friends {
 
         friends.add(friendToAddUUID);
 
-        if (playerFriends.containsKey(playerUUID)) {
-            playerFriends.put(playerUUID, friends);
-        } else {
-            playerFriends.replace(playerUUID, playerFriends.get(playerUUID), friends);
-        }
+        playerFriends.merge(playerUUID, friends, (oldValue, newValue) -> newValue);
     }
 
     public void removeFriend(Player player, Player friendToRemove) {

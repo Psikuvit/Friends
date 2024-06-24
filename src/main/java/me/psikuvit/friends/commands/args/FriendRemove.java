@@ -1,6 +1,6 @@
 package me.psikuvit.friends.commands.args;
 
-import me.psikuvit.friends.Main;
+import me.psikuvit.friends.FriendsPlugin;
 import me.psikuvit.friends.Utils;
 import me.psikuvit.friends.commands.CommandAbstract;
 import org.bukkit.Bukkit;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FriendRemove extends CommandAbstract {
 
-    public FriendRemove(Main plugin) {
+    public FriendRemove(FriendsPlugin plugin) {
         super(plugin);
     }
 

@@ -1,6 +1,6 @@
 package me.psikuvit.friends.database.local;
 
-import me.psikuvit.friends.Friends;
+import me.psikuvit.friends.FriendsManager;
 import me.psikuvit.friends.Utils;
 import me.psikuvit.friends.database.Database;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class SQLite implements Database {
 
     private final File file = new File("plugins/Friends/friends.yml");
-    private final Friends friendsMethods = Friends.getInstance();
+    private final FriendsManager friendsMethods = FriendsManager.getInstance();
     private FileConfiguration friendsYML = null;
 
     public void reload() {
@@ -32,7 +32,7 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void loadHashMaps() {
+    public void loadData() {
         for (String player : friendsYML.getKeys(false)) {
 
             UUID playerUUID = UUID.fromString(player);
@@ -49,7 +49,7 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void saveHashMaps() {
+    public void saveData() {
         Map<UUID, List<UUID>> friendsMap = friendsMethods.getPlayerFriends();
 
         for (Map.Entry<UUID, List<UUID>> entry : friendsMap.entrySet()) {

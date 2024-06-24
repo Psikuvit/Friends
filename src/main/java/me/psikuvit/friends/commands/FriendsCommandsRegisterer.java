@@ -1,6 +1,6 @@
 package me.psikuvit.friends.commands;
 
-import me.psikuvit.friends.Main;
+import me.psikuvit.friends.FriendsPlugin;
 import me.psikuvit.friends.Utils;
 import me.psikuvit.friends.commands.args.FriendAdd;
 import me.psikuvit.friends.commands.args.FriendRemove;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class FriendsCommandsRegisterer implements CommandExecutor, TabExecutor {
     private final Map<String, CommandAbstract> commandAbstractMap;
 
-    public FriendsCommandsRegisterer(final Main plugin) {
+    public FriendsCommandsRegisterer(final FriendsPlugin plugin) {
         commandAbstractMap = new HashMap<>();
         commandAbstractMap.put("add", new FriendAdd(plugin));
         commandAbstractMap.put("remove", new FriendRemove(plugin));

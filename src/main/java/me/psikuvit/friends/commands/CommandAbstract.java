@@ -1,17 +1,17 @@
 package me.psikuvit.friends.commands;
 
-import me.psikuvit.friends.Friends;
-import me.psikuvit.friends.Main;
+import me.psikuvit.friends.FriendsManager;
+import me.psikuvit.friends.FriendsPlugin;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
 public abstract class CommandAbstract {
 
-    protected Main plugin;
-    protected Friends friendsMethods = Friends.getInstance();
+    protected FriendsPlugin plugin;
+    protected FriendsManager friendsMethods = FriendsManager.getInstance();
 
-    public CommandAbstract(final Main plugin) {
+    public CommandAbstract(final FriendsPlugin plugin) {
         this.plugin = plugin;
     }
 

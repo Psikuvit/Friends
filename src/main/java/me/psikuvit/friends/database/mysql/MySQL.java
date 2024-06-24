@@ -1,7 +1,6 @@
 package me.psikuvit.friends.database.mysql;
 
-import me.psikuvit.friends.ConfigManager;
-import me.psikuvit.friends.Main;
+import me.psikuvit.friends.FriendsPlugin;
 import me.psikuvit.friends.Utils;
 import org.bukkit.Bukkit;
 
@@ -12,12 +11,13 @@ import java.sql.SQLException;
 
 public class MySQL {
 
+    private final FriendsPlugin plugin = FriendsPlugin.getInstance();
 
-    private final String host = ConfigManager.getString("msqyl.host");
-    private final String port = ConfigManager.getString("msqyl.port");
-    private final String database = ConfigManager.getString("msqyl.database");
-    private final String username = ConfigManager.getString("msqyl.username");
-    private final String password = ConfigManager.getString("msqyl.password");
+    private final String host = plugin.getConfig().getString("msqyl.host");
+    private final String port = plugin.getConfig().getString("msqyl.port");
+    private final String database = plugin.getConfig().getString("msqyl.database");
+    private final String username = plugin.getConfig().getString("msqyl.username");
+    private final String password = plugin.getConfig().getString("msqyl.password");
     private Connection connection;
 
     // Connect to Database
@@ -27,7 +27,7 @@ public class MySQL {
             Utils.log("Connected to MySQL");
         } catch (SQLException ex) {
             Utils.log("No valid MySQL Credentials is set in Config!\n Disabling Plugin!");
-            Bukkit.getPluginManager().disablePlugin(Main.getInstance());
+            Bukkit.getPluginManager().disablePlugin(FriendsPlugin.getInstance());
         }
     }
 
