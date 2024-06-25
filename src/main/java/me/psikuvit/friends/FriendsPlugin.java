@@ -12,40 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class FriendsPlugin extends JavaPlugin {
 
     private static FriendsPlugin instance;
-
     private MySQL mySQL;
     private Database database;
 
     public static FriendsPlugin getInstance() {
         return instance;
-    }
-
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-
-        instance = this;
-
-        saveDefaultConfig();
-
-        if (Utils.getDatabaseType() == DatabaseType.MySQL) {
-            mySQL = new MySQL();
-            mySQL.connectMySQL();
-            mySQL.registerMySQL();
-
-            database = new MySQLData();
-        } else if (Utils.getDatabaseType() == DatabaseType.SQLite) {
-            database = new SQLite();
-
-        }
-
-        database.loadData();
-
-
-        getServer().getPluginManager().registerEvents(new JoinListener(), this);
-
-        getCommand("friends").setExecutor(new FriendsCommandsRegisterer(this));
-        getCommand("friends").setTabCompleter(new FriendsCommandsRegisterer(this));
     }
 
     @Override
@@ -58,9 +29,32 @@ public final class FriendsPlugin extends JavaPlugin {
         }
     }
 
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+
+        instance = this;
+
+        saveDefaultConfig();
+
+        if (Utils.getDatabaseType() == DatabaseType.MYSQL) {
+            database = new MySQLData();
+        } else if (Utils.getDatabaseType() == DatabaseType.SQLITE) {
+            database = new SQLite();
+        }
+
+        database.connectIntoDB();
+        database.loadData();
+
+
+        getServer().getPluginManager().registerEvents(new JoinListener(), this);
+
+        getCommand("friends").setExecutor(new FriendsCommandsRegisterer(this));
+        getCommand("friends").setTabCompleter(new FriendsCommandsRegisterer(this));
+    }
+
     public MySQL getMySQL() {
         return mySQL;
     }
-
 
 }

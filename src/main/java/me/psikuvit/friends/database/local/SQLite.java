@@ -15,36 +15,38 @@ import java.util.UUID;
 
 public class SQLite implements Database {
 
-    private final File file = new File("plugins/Friends/friends.yml");
+    private final File directory = new File("plugins/Friends/players");
     private final FriendsManager friendsMethods = FriendsManager.getInstance();
     private FileConfiguration friendsYML = null;
 
-    public void reload() {
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                Utils.log("Couldn't create file");
-            }
+    @Override
+    public void connectIntoDB() {
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) Utils.log("Couldn't create file");
         }
-        friendsYML = YamlConfiguration.loadConfiguration(file);
     }
 
     @Override
     public void loadData() {
-        for (String player : friendsYML.getKeys(false)) {
+        File[] playerFiles = directory.listFiles();
 
-            UUID playerUUID = UUID.fromString(player);
-            List<UUID> friends = new ArrayList<>();
+        if (playerFiles == null) return;
 
-            for (String friend : friendsYML.getStringList(player)) {
-                UUID friendUUID = UUID.fromString(friend);
-                friends.add(friendUUID);
+        for (File playerFile : playerFiles) {
+            if (playerFile.isFile()) {
+                FileConfiguration playerYML = YamlConfiguration.loadConfiguration(playerFile);
+
+                String player = playerFile.getName().replace(".yml", "");
+
+                UUID playerUUID = UUID.fromString(player);
+                List<UUID> friends = new ArrayList<>();
+
+                for (String friend : playerYML.getStringList("friends")) {
+                    UUID friendUUID = UUID.fromString(friend);
+                    friends.add(friendUUID);
+                }
+                friendsMethods.getPlayerFriends().put(playerUUID, friends);
             }
-            friendsMethods.getPlayerFriends().put(playerUUID, friends);
-
-            Utils.log("Data loaded successfully!");
         }
     }
 
@@ -53,15 +55,25 @@ public class SQLite implements Database {
         Map<UUID, List<UUID>> friendsMap = friendsMethods.getPlayerFriends();
 
         for (Map.Entry<UUID, List<UUID>> entry : friendsMap.entrySet()) {
+
             UUID playerUUID = entry.getKey();
             List<UUID> friends = entry.getValue();
-            friendsYML.set(String.valueOf(playerUUID), friends);
+            File playerFile = new File(directory, playerUUID.toString() + ".yml");
+            FileConfiguration playerYML = YamlConfiguration.loadConfiguration(playerFile);
+
+            List<String> friendsList = new ArrayList<>();
+            for (UUID friend : friends) {
+                friendsList.add(friend.toString());
+            }
+            playerYML.set("friends", friendsList);
+
+            try {
+                playerYML.save(playerFile);
+            } catch (IOException e) {
+                Utils.log("Couldn't save data for player " + playerUUID);
+            }
         }
 
-        try {
-            friendsYML.save(file);
-        } catch (IOException e) {
-            Utils.log("Saved Data Successfully!");
-        }
+        Utils.log("Saved Data Successfully!");
     }
 }

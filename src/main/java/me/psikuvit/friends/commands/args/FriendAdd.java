@@ -32,8 +32,10 @@ public class FriendAdd extends CommandAbstract {
             return;
         }
 
-        friendsMethods.addFriend(player, friendToAdd);
+        String message = friendsMethods.addFriend(player, friendToAdd) ?
+                "&cThis player is already your friend!" : "&cFriend '" + player.getName() + "' has been added successfully!";
 
+        player.sendMessage(Utils.color(message));
     }
 
     @Override

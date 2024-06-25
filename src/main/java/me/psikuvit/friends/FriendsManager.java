@@ -4,12 +4,13 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class FriendsManager {
 
-    private final HashMap<UUID, List<UUID>> playerFriends;
-    private final HashMap<UUID, List<UUID>> ignoredPlayers;
+    private final Map<UUID, List<UUID>> playerFriends;
+    private final Map<UUID, List<UUID>> ignoredPlayers;
 
     private static FriendsManager INSTANCE;
 
@@ -25,27 +26,27 @@ public class FriendsManager {
         return INSTANCE;
     }
 
-    public HashMap<UUID, List<UUID>> getIgnoredPlayers() {
-        return ignoredPlayers;
-    }
-
-    public HashMap<UUID, List<UUID>> getPlayerFriends() {
+    public Map<UUID, List<UUID>> getIgnoredPlayers() {
         return playerFriends;
     }
 
-    public void addFriend(Player player, Player friendToAdd) {
+    public Map<UUID, List<UUID>> getPlayerFriends() {
+        return playerFriends;
+    }
+
+    public boolean addFriend(Player player, Player friendToAdd) {
         UUID playerUUID = player.getUniqueId();
         UUID friendToAddUUID = friendToAdd.getUniqueId();
         List<UUID> friends = playerFriends.get(playerUUID);
 
         if (friends.contains(friendToAddUUID)) {
-            player.sendMessage(Utils.color("&cThis player is already your friends!"));
-            return;
+            return false;
         }
 
         friends.add(friendToAddUUID);
 
         playerFriends.merge(playerUUID, friends, (oldValue, newValue) -> newValue);
+        return true;
     }
 
     public void removeFriend(Player player, Player friendToRemove) {

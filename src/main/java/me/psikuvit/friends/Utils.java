@@ -7,8 +7,8 @@ public class Utils {
 
     private static final FriendsPlugin plugin = FriendsPlugin.getInstance();
 
-    public static void log(String s) {
-       plugin.getLogger().info(s);
+    public static void log(String toLog) {
+       plugin.getLogger().info(toLog);
     }
 
     public static String color(String msg) {

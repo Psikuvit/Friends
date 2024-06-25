@@ -18,6 +18,12 @@ public class MySQLData implements Database {
     private final FriendsManager friendsMethods = FriendsManager.getInstance();
 
     @Override
+    public void connectIntoDB() {
+        mySQL.connectMySQL();
+        mySQL.registerMySQL();
+    }
+
+    @Override
     public void loadData() {
 
         try (Connection connection = mySQL.getConnection()) {
